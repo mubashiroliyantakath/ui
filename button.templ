@@ -1,0 +1,59 @@
+package ui
+
+
+var ButtonVariants = map[string]string{
+    "default": "bg-primary text-primary-foreground hover:bg-primary/90",
+    "destructive": "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+    "outline": "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+    "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+    "ghost": "hover:bg-accent hover:text-accent-foreground",
+    "link": "text-primary underline-offset-4 hover:underline",
+}
+
+var ButtonSizes = map[string]string{
+    "default": "h-10 px-4 py-2",
+    "sm": "h-9 rounded-md px-3",
+    "lg": "h-11 rounded-md px-8",
+    "icon": "h-10 w-10",
+}
+
+type ButtonProps struct {
+    Type string
+    // Available options: `default`, `destructive`, `outline`, `secondary`, `ghost`, `link`
+    Variant string
+    // Available options: `default`, `sm`, `lg`, `icon`
+    Size string
+    Class string
+}
+
+func (p ButtonProps) GetVariant() string {
+    value, exists := ButtonVariants[p.Variant]
+    if exists {
+        return value
+    }
+    return ButtonVariants["default"]
+
+}
+
+func (p ButtonProps) GetSize() string {
+    value, exists := ButtonSizes[p.Size]
+    if exists {
+        return value
+    }
+    return ButtonSizes["default"]
+}
+
+
+templ Button(props ButtonProps) {
+    <button
+        type="button"
+        class={
+            "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+            props.GetVariant(),
+            props.GetSize(),
+            props.Class,
+        }
+    >
+        { children... }
+    </button>
+}
